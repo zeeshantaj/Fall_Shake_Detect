@@ -25,7 +25,7 @@ public class Shake_and_Fall_Activity extends AppCompatActivity {
     private SensorManager sensorManager;
     private Sensor accelerometerSensor;
 
-
+    private MaterialSwitch detectSwitchBtn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,8 +33,31 @@ public class Shake_and_Fall_Activity extends AppCompatActivity {
 
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         accelerometerSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+
+
+        detectSwitchBtn = findViewById(R.id.detectSwitch);
+        detectSwitchBtn.setChecked(false);
+        unregisterSensorListener();
+
+        detectSwitchBtn.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                Toast.makeText(this, "Active", Toast.LENGTH_SHORT).show();
+                registerSensorListener();
+            } else {
+                Toast.makeText(this, "InActive", Toast.LENGTH_SHORT).show();
+                unregisterSensorListener();
+            }
+        });
     }
 
+
+    private void registerSensorListener() {
+        sensorManager.registerListener(sensorEventListener, accelerometerSensor, SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+    private void unregisterSensorListener() {
+        sensorManager.unregisterListener(sensorEventListener);
+    }
     private final SensorEventListener sensorEventListener = new SensorEventListener() {
         @Override
         public void onSensorChanged(SensorEvent event) {
@@ -107,23 +130,3 @@ public class Shake_and_Fall_Activity extends AppCompatActivity {
         sensorManager.unregisterListener(sensorEventListener);
     }
 }
-//      switchBtn.setChecked(false);
-//    unregisterSensorListener();
-//
-//        switchBtn.setOnCheckedChangeListener((buttonView, isChecked) -> {
-//        if (isChecked){
-//            Toast.makeText(this, "Active", Toast.LENGTH_SHORT).show();
-//            registerSensorListener();
-//        }
-//        else {
-//            Toast.makeText(this, "InActive", Toast.LENGTH_SHORT).show();
-//            unregisterSensorListener();
-//        }
-//    });
-//    private void registerSensorListener() {
-//        sensorManager.registerListener(sensorEventListener, accelerometerSensor, SensorManager.SENSOR_DELAY_NORMAL);
-//    }
-//
-//    private void unregisterSensorListener() {
-//        sensorManager.unregisterListener(sensorEventListener);
-//    }
