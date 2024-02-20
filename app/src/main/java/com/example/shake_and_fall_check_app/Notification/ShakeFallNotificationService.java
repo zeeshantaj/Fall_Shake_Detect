@@ -12,11 +12,18 @@ import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
+import com.example.shake_and_fall_check_app.Database.Detect_Data_Model;
+import com.example.shake_and_fall_check_app.Database.Detect_Database;
 import com.example.shake_and_fall_check_app.R;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
 public class ShakeFallNotificationService extends Service implements SensorEventListener {
     private static final int NOTIFICATION_ID = 1;
@@ -28,7 +35,8 @@ public class ShakeFallNotificationService extends Service implements SensorEvent
 
     public  long lastShakeTime = 0;
     public  float lastX, lastY, lastZ;
-
+    private Detect_Database detectDatabase;
+    String title ;
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
@@ -50,6 +58,8 @@ public class ShakeFallNotificationService extends Service implements SensorEvent
     }
     @Override
     public void onSensorChanged(SensorEvent event) {
+
+
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
             float x = event.values[0];
             float y = event.values[1];
@@ -59,6 +69,7 @@ public class ShakeFallNotificationService extends Service implements SensorEvent
 
             if (isShake(acceleration, x, y, z)) {
                 if (acceleration <= 60) {
+                    title = "shake";
                     //handleShakeDetected();
                     showNotification("Shake ","shaking detected "+acceleration);
                     Log.e("MyApp", "shake acceleration " + acceleration);
@@ -66,14 +77,36 @@ public class ShakeFallNotificationService extends Service implements SensorEvent
 
             } else if (acceleration > FALL_THRESHOLD) {
                 //handleFallDetected();
+                title = "Fall";
                 showNotification("Fall ","Fall detected "+acceleration);
                 Log.e("MyApp", "fall acceleration " + acceleration);
             }
+
+            Calendar cal = Calendar.getInstance();
+            SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss:aa dd/MM/yyyy",Locale.US);
+            String strDate = sdf.format(cal.getTime());
+
+            insertIntoData(title,acceleration,strDate);
 
             lastX = x;
             lastY = y;
             lastZ = z;
         }
+    }
+
+    private void insertIntoData(String title,float acceleration,String time){
+        detectDatabase = Detect_Database.getInstance(this);
+        Detect_Data_Model detectDataModel = new Detect_Data_Model();
+
+
+
+        detectDataModel.setDetectTitle(title);
+        detectDataModel.setAcceleration(acceleration);
+        detectDataModel.setTime(time);
+
+
+        detectDatabase.mainDao().insert(detectDataModel);
+        Toast.makeText(this, "Data inserted", Toast.LENGTH_SHORT).show();
     }
 
     @Override
