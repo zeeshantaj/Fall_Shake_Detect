@@ -1,17 +1,7 @@
 package com.example.shake_and_fall_check_app.Notification;
 
-import static com.example.shake_and_fall_check_app.Shake_and_Fall_Activity.FALL_THRESHOLD;
-import static com.example.shake_and_fall_check_app.Shake_and_Fall_Activity.SHAKE_SLOP_TIME_MS;
-import static com.example.shake_and_fall_check_app.Shake_and_Fall_Activity.SHAKE_THRESHOLD;
-import static com.example.shake_and_fall_check_app.Shake_and_Fall_Activity.lastShakeTime;
-import static com.example.shake_and_fall_check_app.Shake_and_Fall_Activity.lastX;
-import static com.example.shake_and_fall_check_app.Shake_and_Fall_Activity.lastY;
-import static com.example.shake_and_fall_check_app.Shake_and_Fall_Activity.lastZ;
-
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -32,6 +22,12 @@ public class ShakeFallNotificationService extends Service implements SensorEvent
     private static final int NOTIFICATION_ID = 1;
     private SensorManager sensorManager;
     private Sensor accelerometerSensor;
+    public final float FALL_THRESHOLD = 40.8f * 2; // 2g threshold for fall detection
+    public  final int SHAKE_SLOP_TIME_MS = 500; // minimum time between two shake events
+    public  final float SHAKE_THRESHOLD = 29; // acceleration threshold for shake detection
+
+    public  long lastShakeTime = 0;
+    public  float lastX, lastY, lastZ;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
