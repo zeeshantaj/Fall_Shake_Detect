@@ -42,29 +42,29 @@ public class Shake_and_Fall_Activity extends AppCompatActivity {
         detectSwitchBtn = findViewById(R.id.detectSwitch);
         detectSwitchBtn.setChecked(sharedPreferences.getBoolean("switchState", false));
         boolean isCheckedInitial = sharedPreferences.getBoolean("switchState", false);
-        if (isCheckedInitial) {
-            Toast.makeText(this, "Active", Toast.LENGTH_SHORT).show();
-
-            startService(new Intent(this,ShakeFallNotificationService.class));
-        } else {
-            Toast.makeText(this, "InActive", Toast.LENGTH_SHORT).show();
-
-
-            stopService(new Intent(this,ShakeFallNotificationService.class));
-        }
-
-
-        detectSwitchBtn.setOnCheckedChangeListener((buttonView, isChecked) -> {
-
-            if (isChecked) {
+            if (isCheckedInitial) {
                 Toast.makeText(this, "Active", Toast.LENGTH_SHORT).show();
-                //registerSensorListener();
+
                 startService(new Intent(this,ShakeFallNotificationService.class));
             } else {
                 Toast.makeText(this, "InActive", Toast.LENGTH_SHORT).show();
+
+
                 stopService(new Intent(this,ShakeFallNotificationService.class));
             }
-            sharedPreferences.edit().putBoolean("switchState", isChecked).apply();
+
+
+            detectSwitchBtn.setOnCheckedChangeListener((buttonView, isChecked) -> {
+
+                if (isChecked) {
+                    Toast.makeText(this, "Active", Toast.LENGTH_SHORT).show();
+                    //registerSensorListener();
+                    startService(new Intent(this,ShakeFallNotificationService.class));
+                } else {
+                    Toast.makeText(this, "InActive", Toast.LENGTH_SHORT).show();
+                    stopService(new Intent(this,ShakeFallNotificationService.class));
+                }
+                sharedPreferences.edit().putBoolean("switchState", isChecked).apply();
 
 
             //            if (isChecked) {
