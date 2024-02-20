@@ -42,7 +42,7 @@ public class DetectAdapter extends RecyclerView.Adapter<DetectAdapter.ViewHolder
         Detect_Data_Model model = modelList.get(position);
         holder.title.setText(model.getDetectTitle() + "Shake");
         holder.time.setText("Time: "+model.getTime());
-        holder.acceleration.setText("Acceleration "+String.valueOf(model.getAcceleration()));
+        holder.acceleration.setText("Acceleration: "+String.valueOf(model.getAcceleration()));
 
     }
 
