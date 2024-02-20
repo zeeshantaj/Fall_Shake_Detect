@@ -112,26 +112,15 @@ public class ShakeFallNotificationService extends Service implements SensorEvent
             notificationManager.createNotificationChannel(channel);
         }
 
-        Intent dismissIntent = new Intent(NotificationManager.ACTION_NOTIFICATION_CANCELLED);
-        PendingIntent dismissPendingIntent = PendingIntent.getBroadcast(this, 0, dismissIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "channel_id")
                 .setSmallIcon(R.drawable.baseline_notifications_active_24)
                 .setContentTitle(title)
                 .setContentText(message)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setDeleteIntent(dismissPendingIntent); // Set the delete intent
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+        notificationManager.cancel(NOTIFICATION_ID);
 
         startForeground(NOTIFICATION_ID, builder.build());
-
-//        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "channel_id")
-//                .setSmallIcon(R.drawable.baseline_notifications_active_24)
-//                .setContentTitle(title)
-//                .setContentText(message)
-//                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-//        notificationManager.cancel(NOTIFICATION_ID);
-//
-//        startForeground(NOTIFICATION_ID, builder.build());
 
     }
     @Nullable

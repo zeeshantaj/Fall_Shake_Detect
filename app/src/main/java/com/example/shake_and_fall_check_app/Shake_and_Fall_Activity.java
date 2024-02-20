@@ -44,9 +44,12 @@ public class Shake_and_Fall_Activity extends AppCompatActivity {
         boolean isCheckedInitial = sharedPreferences.getBoolean("switchState", false);
         if (isCheckedInitial) {
             Toast.makeText(this, "Active", Toast.LENGTH_SHORT).show();
+
             startService(new Intent(this,ShakeFallNotificationService.class));
         } else {
             Toast.makeText(this, "InActive", Toast.LENGTH_SHORT).show();
+
+
             stopService(new Intent(this,ShakeFallNotificationService.class));
         }
 
