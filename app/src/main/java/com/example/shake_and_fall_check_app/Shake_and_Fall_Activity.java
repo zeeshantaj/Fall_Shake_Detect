@@ -12,10 +12,12 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.example.shake_and_fall_check_app.DetailsActivity.Details_Activity;
 import com.example.shake_and_fall_check_app.Notification.ShakeFallNotificationService;
 import com.google.android.material.materialswitch.MaterialSwitch;
@@ -28,7 +30,8 @@ public class Shake_and_Fall_Activity extends AppCompatActivity {
 
     private MaterialSwitch detectSwitchBtn;
     private SharedPreferences sharedPreferences;
-
+    int flag = 0;
+    private LottieAnimationView animationView;
     private LinearLayout shakeHistoryBtn, fallHistoryBtn;
 
     @Override
@@ -41,28 +44,19 @@ public class Shake_and_Fall_Activity extends AppCompatActivity {
         detectSwitchBtn = findViewById(R.id.detectSwitch);
         shakeHistoryBtn = findViewById(R.id.shakeHistory);
         fallHistoryBtn = findViewById(R.id.fallHistory);
-
-//        ValueAnimator animator
-//                = ValueAnimator.ofFloat(0f, 1f);
-//        animator
-//                .addUpdateListener(animation -> {
-//                    animationView
-//                            .setProgress(
-//                                    animation
-//                                            .getAnimatedValue());
-//                });
-//        animator.start();
+//
+         animationView = findViewById(R.id.animation_view);
 
         sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
         detectSwitchBtn.setChecked(sharedPreferences.getBoolean("switchState", false));
         boolean isCheckedInitial = sharedPreferences.getBoolean("switchState", false);
         if (isCheckedInitial) {
             Toast.makeText(this, "Active", Toast.LENGTH_SHORT).show();
-
+            animationView.playAnimation();
             startService(new Intent(this, ShakeFallNotificationService.class));
         } else {
             Toast.makeText(this, "InActive", Toast.LENGTH_SHORT).show();
-
+            animationView.cancelAnimation();
 
             stopService(new Intent(this, ShakeFallNotificationService.class));
         }
@@ -73,10 +67,12 @@ public class Shake_and_Fall_Activity extends AppCompatActivity {
             if (isChecked) {
                 Toast.makeText(this, "Active", Toast.LENGTH_SHORT).show();
                 //registerSensorListener();
+                animationView.playAnimation();
                 startService(new Intent(this, ShakeFallNotificationService.class));
             } else {
                 Toast.makeText(this, "InActive", Toast.LENGTH_SHORT).show();
                 stopService(new Intent(this, ShakeFallNotificationService.class));
+                animationView.cancelAnimation();
             }
             sharedPreferences.edit().putBoolean("switchState", isChecked).apply();
 
@@ -89,7 +85,19 @@ public class Shake_and_Fall_Activity extends AppCompatActivity {
             setIntent(true);
         });
     }
-
+    private void changeState() {
+        if (flag == 0) {
+            animationView.setMinAndMaxProgress(0f, 0.43f); //Here, calculation is done on the basis of start and stop frame divided by the total number of frames
+            animationView.playAnimation();
+            flag = 1;
+            //---- Your code here------
+        } else {
+            animationView.setMinAndMaxProgress(0.5f, 1f);
+            animationView.playAnimation();
+            flag = 0;
+            //---- Your code here------
+        }
+    }
     private void setIntent(boolean isTrue) {
         Intent intent = new Intent(this, Details_Activity.class);
         intent.putExtra("isHistory", isTrue);
