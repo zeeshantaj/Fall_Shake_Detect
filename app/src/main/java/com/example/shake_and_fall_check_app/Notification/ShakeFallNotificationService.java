@@ -60,6 +60,8 @@ public class ShakeFallNotificationService extends Service implements SensorEvent
     public void onSensorChanged(SensorEvent event) {
 
 
+
+
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
             float x = event.values[0];
             float y = event.values[1];
@@ -68,36 +70,22 @@ public class ShakeFallNotificationService extends Service implements SensorEvent
             float acceleration = (float) Math.sqrt(x * x + y * y + z * z);
 
             if (isShake(acceleration, x, y, z)) {
-                if (acceleration <= 60) {
+                if (acceleration >= 60 || acceleration <= 81) {
                     title = "shake";
                     //handleShakeDetected();
                     showNotification("Shake ","shaking detected "+acceleration);
+                    insertIntoData("Shake",acceleration);
                     Log.e("MyApp", "shake acceleration " + acceleration);
                 }
 
             } else if (acceleration > FALL_THRESHOLD) {
                 //handleFallDetected();
-                title = "Fall";
+
                 showNotification("Fall ","Fall detected "+acceleration);
+                insertIntoData("Fall",acceleration);
                 Log.e("MyApp", "fall acceleration " + acceleration);
             }
 
-            Calendar cal = Calendar.getInstance();
-            SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss:aa dd/MM/yyyy",Locale.US);
-            String strDate = sdf.format(cal.getTime());
-            detectDatabase = Detect_Database.getInstance(this);
-            Detect_Data_Model detectDataModel = new Detect_Data_Model();
-
-
-
-            detectDataModel.setDetectTitle(title);
-            detectDataModel.setAcceleration(acceleration);
-            detectDataModel.setTime(strDate);
-
-
-            detectDatabase.mainDao().insert(detectDataModel);
-            //Toast.makeText(this, "Data inserted", Toast.LENGTH_SHORT).show();
-//            insertIntoData(title,acceleration,strDate);
 
             lastX = x;
             lastY = y;
@@ -105,8 +93,21 @@ public class ShakeFallNotificationService extends Service implements SensorEvent
         }
     }
 
-    private void insertIntoData(String title,float acceleration,String time){
+    private void insertIntoData(String title,float acceleration){
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss:aa dd/MM/yyyy",Locale.US);
+        String strDate = sdf.format(cal.getTime());
+        detectDatabase = Detect_Database.getInstance(this);
+        Detect_Data_Model detectDataModel = new Detect_Data_Model();
 
+        detectDataModel.setDetectTitle(title);
+        detectDataModel.setAcceleration(acceleration);
+        detectDataModel.setTime(strDate);
+
+
+        detectDatabase.mainDao().insert(detectDataModel);
+
+        Toast.makeText(this, "Data inserted", Toast.LENGTH_SHORT).show();
     }
 
     @Override

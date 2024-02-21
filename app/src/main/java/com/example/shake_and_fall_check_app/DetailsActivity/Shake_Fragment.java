@@ -58,7 +58,7 @@ public class Shake_Fragment extends Fragment {
                 public void onItemClick(Detect_Data_Model item) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                     builder.setTitle("ACTION REQUIRE")
-                            .setMessage("Do you want to Delete Or Edit This Alarm Data")
+                            .setMessage("Do you want to Delete Or Edit This Item")
                             .setPositiveButton("Edit Task", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {

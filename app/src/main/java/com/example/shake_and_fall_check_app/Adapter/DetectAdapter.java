@@ -40,7 +40,7 @@ public class DetectAdapter extends RecyclerView.Adapter<DetectAdapter.ViewHolder
     public void onBindViewHolder(@NonNull DetectAdapter.ViewHolder holder, int position) {
 
         Detect_Data_Model model = modelList.get(position);
-        holder.title.setText(model.getDetectTitle() + "Detected");
+        holder.title.setText(model.getDetectTitle() + " Detected");
         holder.time.setText("Time: "+model.getTime());
         holder.acceleration.setText("Acceleration: "+String.valueOf(model.getAcceleration()));
         holder.itemView.setOnClickListener(v -> {
