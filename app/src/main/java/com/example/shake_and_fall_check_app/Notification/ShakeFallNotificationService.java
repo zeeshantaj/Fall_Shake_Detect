@@ -85,8 +85,19 @@ public class ShakeFallNotificationService extends Service implements SensorEvent
             Calendar cal = Calendar.getInstance();
             SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss:aa dd/MM/yyyy",Locale.US);
             String strDate = sdf.format(cal.getTime());
+            detectDatabase = Detect_Database.getInstance(this);
+            Detect_Data_Model detectDataModel = new Detect_Data_Model();
 
-            insertIntoData(title,acceleration,strDate);
+
+
+            detectDataModel.setDetectTitle(title);
+            detectDataModel.setAcceleration(acceleration);
+            detectDataModel.setTime(strDate);
+
+
+            detectDatabase.mainDao().insert(detectDataModel);
+            //Toast.makeText(this, "Data inserted", Toast.LENGTH_SHORT).show();
+//            insertIntoData(title,acceleration,strDate);
 
             lastX = x;
             lastY = y;
@@ -95,18 +106,7 @@ public class ShakeFallNotificationService extends Service implements SensorEvent
     }
 
     private void insertIntoData(String title,float acceleration,String time){
-        detectDatabase = Detect_Database.getInstance(this);
-        Detect_Data_Model detectDataModel = new Detect_Data_Model();
 
-
-
-        detectDataModel.setDetectTitle(title);
-        detectDataModel.setAcceleration(acceleration);
-        detectDataModel.setTime(time);
-
-
-        detectDatabase.mainDao().insert(detectDataModel);
-        Toast.makeText(this, "Data inserted", Toast.LENGTH_SHORT).show();
     }
 
     @Override
