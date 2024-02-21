@@ -2,6 +2,7 @@ package com.example.shake_and_fall_check_app;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -28,7 +29,7 @@ public class Shake_and_Fall_Activity extends AppCompatActivity {
     private MaterialSwitch detectSwitchBtn;
     private SharedPreferences sharedPreferences;
 
-    private LinearLayout shakeHistoryBtn,fallHistoryBtn;
+    private LinearLayout shakeHistoryBtn, fallHistoryBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,47 +42,57 @@ public class Shake_and_Fall_Activity extends AppCompatActivity {
         shakeHistoryBtn = findViewById(R.id.shakeHistory);
         fallHistoryBtn = findViewById(R.id.fallHistory);
 
+//        ValueAnimator animator
+//                = ValueAnimator.ofFloat(0f, 1f);
+//        animator
+//                .addUpdateListener(animation -> {
+//                    animationView
+//                            .setProgress(
+//                                    animation
+//                                            .getAnimatedValue());
+//                });
+//        animator.start();
 
         sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
         detectSwitchBtn.setChecked(sharedPreferences.getBoolean("switchState", false));
         boolean isCheckedInitial = sharedPreferences.getBoolean("switchState", false);
-            if (isCheckedInitial) {
-                Toast.makeText(this, "Active", Toast.LENGTH_SHORT).show();
+        if (isCheckedInitial) {
+            Toast.makeText(this, "Active", Toast.LENGTH_SHORT).show();
 
-                startService(new Intent(this,ShakeFallNotificationService.class));
+            startService(new Intent(this, ShakeFallNotificationService.class));
+        } else {
+            Toast.makeText(this, "InActive", Toast.LENGTH_SHORT).show();
+
+
+            stopService(new Intent(this, ShakeFallNotificationService.class));
+        }
+
+
+        detectSwitchBtn.setOnCheckedChangeListener((buttonView, isChecked) -> {
+
+            if (isChecked) {
+                Toast.makeText(this, "Active", Toast.LENGTH_SHORT).show();
+                //registerSensorListener();
+                startService(new Intent(this, ShakeFallNotificationService.class));
             } else {
                 Toast.makeText(this, "InActive", Toast.LENGTH_SHORT).show();
-
-
-                stopService(new Intent(this,ShakeFallNotificationService.class));
+                stopService(new Intent(this, ShakeFallNotificationService.class));
             }
-
-
-            detectSwitchBtn.setOnCheckedChangeListener((buttonView, isChecked) -> {
-
-                if (isChecked) {
-                    Toast.makeText(this, "Active", Toast.LENGTH_SHORT).show();
-                    //registerSensorListener();
-                    startService(new Intent(this,ShakeFallNotificationService.class));
-                } else {
-                    Toast.makeText(this, "InActive", Toast.LENGTH_SHORT).show();
-                    stopService(new Intent(this,ShakeFallNotificationService.class));
-                }
-                sharedPreferences.edit().putBoolean("switchState", isChecked).apply();
+            sharedPreferences.edit().putBoolean("switchState", isChecked).apply();
 
         });
 
-            shakeHistoryBtn.setOnClickListener(v -> {
-                setIntent(false);
-            });
-            fallHistoryBtn.setOnClickListener(v -> {
-                setIntent(true);
-            });
+        shakeHistoryBtn.setOnClickListener(v -> {
+            setIntent(false);
+        });
+        fallHistoryBtn.setOnClickListener(v -> {
+            setIntent(true);
+        });
     }
 
-    private void setIntent(boolean isTrue){
+    private void setIntent(boolean isTrue) {
         Intent intent = new Intent(this, Details_Activity.class);
-        intent.putExtra("isHistory",isTrue);
+        intent.putExtra("isHistory", isTrue);
         startActivity(intent);
     }
 }
