@@ -18,7 +18,6 @@ public class Details_Activity extends AppCompatActivity {
         setContentView(R.layout.activity_deails);
 
         boolean isTrue = getIntent().getBooleanExtra("isHistory",false);
-        Toast.makeText(this, "boolean value "+isTrue, Toast.LENGTH_SHORT).show();
         if (isTrue){
             setFragment(new History_Fragment());
         }else {

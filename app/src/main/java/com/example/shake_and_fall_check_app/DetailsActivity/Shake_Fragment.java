@@ -51,14 +51,13 @@ public class Shake_Fragment extends Fragment {
         }else {
             nothingTxt.setVisibility(View.GONE);
 
-            Toast.makeText(getActivity(), "size "+detectDataModelsList.size(), Toast.LENGTH_SHORT).show();
             adapter = new DetectAdapter(getActivity(), detectDataModelsList, new DetectAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(Detect_Data_Model item) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                     builder.setTitle("ACTION REQUIRE")
-                            .setMessage("Do you want to Delete Or Edit This Item")
-                            .setPositiveButton("Edit Task", new DialogInterface.OnClickListener() {
+                            .setMessage("Do you want to Delete This Item")
+                            .setPositiveButton("NO", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
 
@@ -69,7 +68,7 @@ public class Shake_Fragment extends Fragment {
                                 public void onClick(DialogInterface dialogInterface, int i) {
 
                                     detectDatabase.mainDao().delete(item);
-                                    Toast.makeText(getActivity(), "Alarm Deleted", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getActivity(), "Deleted", Toast.LENGTH_SHORT).show();
                                     dialogInterface.dismiss();
                                     detectDataModelsList.remove(item);
                                     adapter.notifyDataSetChanged();
@@ -79,10 +78,13 @@ public class Shake_Fragment extends Fragment {
                             })
                             .show();
                 }
-            });
 
-            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+            });
+            adapter.filteredList("Shake");
             recyclerView.setAdapter(adapter);
+            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
         }
 
         return view;

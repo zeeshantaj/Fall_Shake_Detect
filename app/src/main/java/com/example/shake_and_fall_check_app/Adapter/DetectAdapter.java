@@ -1,6 +1,7 @@
 package com.example.shake_and_fall_check_app.Adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,11 +14,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.shake_and_fall_check_app.Database.Detect_Data_Model;
 import com.example.shake_and_fall_check_app.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DetectAdapter extends RecyclerView.Adapter<DetectAdapter.ViewHolder> {
     private Context context;
     private List<Detect_Data_Model> modelList;
+    private List<Detect_Data_Model> filterList;
     private OnItemClickListener itemClickListener;
     public interface OnItemClickListener {
         void onItemClick(Detect_Data_Model item);
@@ -27,6 +30,17 @@ public class DetectAdapter extends RecyclerView.Adapter<DetectAdapter.ViewHolder
         this.context = context;
         this.modelList = modelList;
         this.itemClickListener = itemClickListener;
+        this.filterList = new ArrayList<>(modelList);
+    }
+    public void filteredList(String title){
+        filterList.clear();
+        for (Detect_Data_Model item:modelList){
+            if (item.getDetectTitle().equalsIgnoreCase(title)){
+                filterList.add(item);
+            }
+        }
+        notifyDataSetChanged();
+
     }
 
     @NonNull
@@ -39,7 +53,7 @@ public class DetectAdapter extends RecyclerView.Adapter<DetectAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull DetectAdapter.ViewHolder holder, int position) {
 
-        Detect_Data_Model model = modelList.get(position);
+        Detect_Data_Model model = filterList.get(position);
         holder.title.setText(model.getDetectTitle() + " Detected");
         holder.time.setText("Time: "+model.getTime());
         holder.acceleration.setText("Acceleration: "+String.valueOf(model.getAcceleration()));
@@ -49,11 +63,13 @@ public class DetectAdapter extends RecyclerView.Adapter<DetectAdapter.ViewHolder
             }
         });
 
+        Log.e("MyApp","list title "+model.getDetectTitle());
+
     }
 
     @Override
     public int getItemCount() {
-        return modelList.size();
+        return filterList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
