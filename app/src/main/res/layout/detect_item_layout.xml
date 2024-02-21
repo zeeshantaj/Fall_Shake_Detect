@@ -16,9 +16,9 @@
             android:id="@+id/detect_item_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="shake detected"
             android:textSize="18sp"
             android:padding="5dp"
+            android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -26,9 +26,9 @@
             android:id="@+id/detect_item_acceleration"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="acceleration 42.4422"
             android:textSize="18sp"
             android:padding="4dp"
+            android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="@+id/detect_item_title"
             app:layout_constraintTop_toBottomOf="@+id/detect_item_title" />
 
@@ -36,9 +36,9 @@
             android:id="@+id/detect_item_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="12/12/1211 12:32:33:pm"
             android:textSize="14sp"
             android:padding="3dp"
+            android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="@+id/detect_item_acceleration"
             app:layout_constraintTop_toBottomOf="@+id/detect_item_acceleration" />
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -30,7 +30,7 @@ public class ShakeFallNotificationService extends Service implements SensorEvent
     private SensorManager sensorManager;
     private Sensor accelerometerSensor;
     public final float FALL_THRESHOLD = 40.8f * 2; // 2g threshold for fall detection
-    public  final int SHAKE_SLOP_TIME_MS = 500; // minimum time between two shake events
+    public  final int SHAKE_SLOP_TIME_MS = 5000; // minimum time between two shake events
     public  final float SHAKE_THRESHOLD = 29; // acceleration threshold for shake detection
 
     public  long lastShakeTime = 0;
