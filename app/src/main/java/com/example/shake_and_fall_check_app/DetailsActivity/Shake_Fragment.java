@@ -52,7 +52,6 @@ public class Shake_Fragment extends Fragment {
             nothingTxt.setVisibility(View.GONE);
 
             Toast.makeText(getActivity(), "size "+detectDataModelsList.size(), Toast.LENGTH_SHORT).show();
-
             adapter = new DetectAdapter(getActivity(), detectDataModelsList, new DetectAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(Detect_Data_Model item) {

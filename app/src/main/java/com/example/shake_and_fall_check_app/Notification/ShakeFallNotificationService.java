@@ -36,7 +36,7 @@ public class ShakeFallNotificationService extends Service implements SensorEvent
     public  long lastShakeTime = 0;
     public  float lastX, lastY, lastZ;
     private Detect_Database detectDatabase;
-    String title ;
+    private boolean isEventInProgress = false;
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
@@ -58,10 +58,29 @@ public class ShakeFallNotificationService extends Service implements SensorEvent
     }
     @Override
     public void onSensorChanged(SensorEvent event) {
-
-
-
-
+//        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+//            float x = event.values[0];
+//            float y = event.values[1];
+//            float z = event.values[2];
+//
+//            float acceleration = (float) Math.sqrt(x * x + y * y + z * z);
+//
+//            if (isShake(acceleration, x, y, z)) {
+//                if (acceleration >= 60 || acceleration <= 81) {
+//                    showNotification("Shake ","shaking detected "+acceleration);
+//                    insertIntoData("Shake",acceleration);
+//                    Log.e("MyApp", "shake acceleration " + acceleration);
+//                }
+//
+//            } else if (acceleration > FALL_THRESHOLD) {
+//                showNotification("Fall ","Fall detected "+acceleration);
+//                insertIntoData("Fall",acceleration);
+//                Log.e("MyApp", "fall acceleration " + acceleration);
+//            }
+//            lastX = x;
+//            lastY = y;
+//            lastZ = z;
+//        }
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
             float x = event.values[0];
             float y = event.values[1];
@@ -69,28 +88,32 @@ public class ShakeFallNotificationService extends Service implements SensorEvent
 
             float acceleration = (float) Math.sqrt(x * x + y * y + z * z);
 
-            if (isShake(acceleration, x, y, z)) {
+            if (!isEventInProgress && isShake(acceleration, x, y, z)) {
                 if (acceleration >= 60 || acceleration <= 81) {
-                    title = "shake";
-                    //handleShakeDetected();
                     showNotification("Shake ","shaking detected "+acceleration);
                     insertIntoData("Shake",acceleration);
+                    isEventInProgress = true; // Set flag to indicate shake event in progress
                     Log.e("MyApp", "shake acceleration " + acceleration);
+                    if (acceleration > FALL_THRESHOLD){
+                        showNotification("Fall ","Fall detected "+acceleration);
+                        insertIntoData("Fall",acceleration);
+                        isEventInProgress = true; // Set flag to indicate fall event in progress
+                        Log.e("MyApp", "fall acceleration " + acceleration);
+                    }
                 }
 
-            } else if (acceleration > FALL_THRESHOLD) {
-                //handleFallDetected();
-
-                showNotification("Fall ","Fall detected "+acceleration);
-                insertIntoData("Fall",acceleration);
-                Log.e("MyApp", "fall acceleration " + acceleration);
             }
 
+            // Reset flag when acceleration falls below a threshold
+            if (isEventInProgress && acceleration < 20) {
+                isEventInProgress = false;
+            }
 
             lastX = x;
             lastY = y;
             lastZ = z;
         }
+
     }
 
     private void insertIntoData(String title,float acceleration){
