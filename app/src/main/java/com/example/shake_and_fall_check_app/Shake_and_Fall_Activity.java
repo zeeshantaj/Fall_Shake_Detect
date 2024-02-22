@@ -24,10 +24,6 @@ import com.example.shake_and_fall_check_app.Notification.ShakeFallNotificationSe
 import com.google.android.material.materialswitch.MaterialSwitch;
 
 public class Shake_and_Fall_Activity extends AppCompatActivity {
-
-
-    private SensorManager sensorManager;
-    private Sensor accelerometerSensor;
     private MaterialSwitch detectSwitchBtn;
     private SharedPreferences sharedPreferences;
     private LottieAnimationView animationView;
@@ -38,8 +34,6 @@ public class Shake_and_Fall_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shake_and_fall);
 
-        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        accelerometerSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         detectSwitchBtn = findViewById(R.id.detectSwitch);
         textView = findViewById(R.id.textView);
         shakeHistoryBtn = findViewById(R.id.shakeHistory);

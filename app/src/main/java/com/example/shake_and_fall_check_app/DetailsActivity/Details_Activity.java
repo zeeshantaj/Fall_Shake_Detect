@@ -23,7 +23,6 @@ public class Details_Activity extends AppCompatActivity {
         }else {
             setFragment(new Shake_Fragment());
         }
-
     }
     private void setFragment(Fragment fragment){
         FragmentManager fragmentManager = getSupportFragmentManager();

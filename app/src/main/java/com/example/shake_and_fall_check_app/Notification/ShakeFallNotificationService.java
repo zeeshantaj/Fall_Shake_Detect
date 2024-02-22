@@ -32,7 +32,6 @@ public class ShakeFallNotificationService extends Service implements SensorEvent
     public final float FALL_THRESHOLD = 40.8f * 2; // 2g threshold for fall detection
     public  final int SHAKE_SLOP_TIME_MS = 5000; // minimum time between two shake events
     public  final float SHAKE_THRESHOLD = 29; // acceleration threshold for shake detection
-
     public  long lastShakeTime = 0;
     public  float lastX, lastY, lastZ;
     private Detect_Database detectDatabase;
@@ -42,20 +41,10 @@ public class ShakeFallNotificationService extends Service implements SensorEvent
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         accelerometerSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         sensorManager.registerListener(this, accelerometerSensor, SensorManager.SENSOR_DELAY_NORMAL);
-
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            startForeground(NOTIFICATION_ID, new Notification());
-//        }
-
         return START_STICKY;
 
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-     //   sensorManager.unregisterListener(this);
-    }
     @Override
     public void onSensorChanged(SensorEvent event) {
 //        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
@@ -87,6 +76,7 @@ public class ShakeFallNotificationService extends Service implements SensorEvent
             float z = event.values[2];
 
             float acceleration = (float) Math.sqrt(x * x + y * y + z * z);
+
 
             if (!isEventInProgress && isShake(acceleration, x, y, z)) {
                 if (acceleration >= 60 || acceleration <= 81) {
