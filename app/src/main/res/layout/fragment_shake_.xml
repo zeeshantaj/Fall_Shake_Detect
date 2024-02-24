@@ -13,11 +13,21 @@
         android:layout_height="wrap_content"
         android:padding="10dp"
         android:text="@string/shake_details"
-        android:textAlignment="viewStart"
+        android:textAlignment="center"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/animation_view_shake"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textView2"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/shake_animation" />
 
     <TextView
         android:id="@+id/shakeNothingShowTxt"
@@ -36,9 +46,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintTop_toBottomOf="@+id/animation_view" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
