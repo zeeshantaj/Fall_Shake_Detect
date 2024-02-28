@@ -22,7 +22,7 @@ import com.example.shake_and_fall_check_app.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class History_Fragment extends Fragment {
+public class Fall_Fragment extends Fragment {
 
     private RecyclerView recyclerView;
     private DetectAdapter adapter;

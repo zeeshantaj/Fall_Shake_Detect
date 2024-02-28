@@ -6,8 +6,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
-import android.widget.FrameLayout;
-import android.widget.Toast;
 
 import com.example.shake_and_fall_check_app.R;
 
@@ -19,7 +17,7 @@ public class Details_Activity extends AppCompatActivity {
 
         boolean isTrue = getIntent().getBooleanExtra("isHistory",false);
         if (isTrue){
-            setFragment(new History_Fragment());
+            setFragment(new Fall_Fragment());
         }else {
             setFragment(new Shake_Fragment());
         }
