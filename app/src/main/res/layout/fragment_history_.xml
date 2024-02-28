@@ -27,7 +27,7 @@
         app:layout_constraintStart_toStartOf="@+id/textView2"
         app:layout_constraintTop_toBottomOf="@+id/textView2"
         app:lottie_loop="true"
-        app:lottie_rawRes="@raw/shake_animation" />
+        app:lottie_rawRes="@raw/fall_animation" />
 
     <TextView
         android:id="@+id/fallNothingShowTxt"
