@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.example.shake_and_fall_check_app.Adapter.DetectAdapter;
 import com.example.shake_and_fall_check_app.Database.Detect_Data_Model;
 import com.example.shake_and_fall_check_app.Database.Detect_Database;
@@ -38,6 +39,8 @@ public class Fall_Fragment extends Fragment {
 
         recyclerView = view.findViewById(R.id.fallRecyclerView);
         nothingTxt = view.findViewById(R.id.fallNothingShowTxt);
+        LottieAnimationView animationView = view.findViewById(R.id.animation_view_fall);
+        animationView.playAnimation();
 
 
 

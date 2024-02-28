@@ -120,7 +120,7 @@ public class ShakeFallNotificationService extends Service implements SensorEvent
 
         detectDatabase.mainDao().insert(detectDataModel);
 
-        Toast.makeText(this, "Data inserted", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, title+" Detected", Toast.LENGTH_SHORT).show();
     }
 
     @Override
