@@ -19,10 +19,11 @@
     <ConstraintSet android:id="@+id/start">
 
         <Constraint
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
+            android:layout_height="200dp"
+            android:layout_width="200dp"
             motion:layout_constraintTop_toBottomOf="@+id/textView2"
             android:id="@+id/animation_view_fall"
+            android:layout_marginStart="15dp"
             motion:layout_constraintEnd_toEndOf="@+id/textView2"
             motion:layout_constraintStart_toStartOf="@+id/textView2" />
         <Constraint
